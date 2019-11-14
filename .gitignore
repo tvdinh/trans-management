@@ -1,0 +1,13 @@
+target/
+.project
+.settings/
+.classpath
+*.aux
+*.bbl
+*.blg
+*.log
+*.*~
+*.dvi
+*.bib
+trash/
+
