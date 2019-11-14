@@ -24,7 +24,7 @@ mvn clean install
 
 A final jar file, named "TransManagementApp.jar" produced in target/ (a built version is also available in /executable
 
-## Run&Test
+## Run
 
 The program expects exactly 4 inputs:
  1. path to transaction load file
@@ -88,4 +88,42 @@ After obtaining all the relevant transaction, calculating the relative balance i
                 relativeBalance += transaction.getAmount();
             } 
         }
+```
+
+## Test
+
+Take a few use case
+
+Data
+```
+TX10001, ACC334455, ACC778899, 20/10/2018 12:47:55, 25.00, PAYMENT
+TX10002, ACC334455, ACC998877, 20/10/2018 17:33:43, 10.50, PAYMENT
+TX10003, ACC998877, ACC778899, 20/10/2018 18:00:00, 5.00, PAYMENT
+TX10004, ACC334455, ACC998877, 20/10/2018 19:45:00, 10.50, REVERSAL,TX10002
+TX10005, ACC334455, ACC778899, 21/10/2018 09:30:00, 7.25, PAYMENT 
+```
+
+- Calculate relative balance for account ACC778899 from '20/10/2018 12:00:00' to '20/10/2018 19:00:00'
+
+This includes TX10002 and TX10003, hence RB is 30.00
+
+```
+ java -jar executable/TransManagementApp.jar transLog/translog1.txt ACC778899 '20/10/2018 12:00:00' '20/10/2018 19:00:00'
+```
+Output:
+
+```
+Relative balance for account ACC778899 from 20/10/2018 12:00:00 to 20/10/2018 19:00:00 is: 30.0
+Number of transactions included is:2
+```
+
+If extends the end to "21/10/2018 09:30:01", it should also includes TX10005, hence RB is 37.25
+
+```
+java -jar executable/TransManagementApp.jar transLog/translog1.txt ACC778899 '20/10/2018 12:00:00' '21/10/2018 09:30:01'
+```
+
+```
+Relative balance for account ACC778899 from 20/10/2018 12:00:00 to 21/10/2018 09:30:01 is: 37.25
+Number of transactions included is:3
 ```
